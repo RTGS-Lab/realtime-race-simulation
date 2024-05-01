@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibWF0dGllZ2lzc2VsYmVjayIsImEiOiJjbG5hcmhvOWMwMHVhMmtsaW04M3dqb2N6In0.KDF-cF60UnFy3r1hGWlWfQ';
+
+// Coordinates of the route
+const routeCoordinates = [
+[-93.49758753327369, 45.108060300322265],
+[-93.49771939763227, 45.108088777189074],
+[-93.49785126199083, 45.10811725405589],
+[-93.49798312634941, 45.1081457309227],
+[-93.49811499070798, 45.10817420778952],
+[-93.49824685506654, 45.108202684656334],
+[-93.49837871942512, 45.10823116152314],
+[-93.49851058378368, 45.10825963838996],
+[-93.49864244814226, 45.10828811525677],
+[-93.49877431250083, 45.108316592123586],
+[-93.49890617685939, 45.108345068990396],
+[-93.49903804121797, 45.10837354585721],
+[-93.49916990557654, 45.10840202272403],
+[-93.4993017699351, 45.10843049959084],
+[-93.49943363429368, 45.108458976457655],
+[-93.49956549865225, 45.108487453324464],
+[-93.49969736301082, 45.10851593019128],
+[-93.49982922736939, 45.1085444070581],
+[-93.49996109172795, 45.10857288392491],
+[-93.50009295608653, 45.108601360791724],
+[-93.5002248204451, 45.10862983765853],
+[-93.50035668480368, 45.10865831452535],
+[-93.50048854916224, 45.10868679139217],
+[-93.5006204135208, 45.108715268258976],
+[-93.50075227787939, 45.10874374512579],
+[-93.50088414223795, 45.1087722219926],
+[-93.50101600659653, 45.10880069885942],
+[-93.5011478709551, 45.10882917572623],
+[-93.50127973531366, 45.108857652593045],
+[-93.50141159967224, 45.10888612945986],
+[-93.5015434640308, 45.10891460632667],
+[-93.50167532838938, 45.10894308319349],
+[-93.50180719274795, 45.1089715600603],
+[-93.50193905710651, 45.109000036927114],
+[-93.50207092146509, 45.10902851379393],
+[-93.50220278582366, 45.10905699066074],
+[-93.50233465018223, 45.10908546752756],
+[-93.5024665145408, 45.109113944394366],
+[-93.50259837889936, 45.10914242126118],
+[-93.50273024325794, 45.109170898128],
+[-93.50286210761651, 45.10919937499481],
+[-93.50299397197507, 45.109227851861625],
+[-93.50312583633365, 45.109256328728435],
+[-93.50325770069222, 45.10928480559525],
+[-93.5033895650508, 45.10931328246206],
+[-93.50352142940936, 45.10934175932888],
+[-93.50365329376793, 45.109370236195694],
+[-93.5037851581265, 45.109398713062504],
+[-93.50391702248507, 45.10942718992932],
+[-93.50404888684365, 45.10945566679613],
+[-93.50409929488298, 45.109536514242365],
+[-93.50401783856374, 45.10958888482178],
+[-93.50393638224449, 45.1096412554012],
+[-93.50385492592525, 45.109693625980626],
+[-93.50377346960602, 45.109745996560044],
+[-93.50369201328678, 45.10979836713946],
+[-93.50361055696753, 45.10985073771888],
+[-93.5035291006483, 45.1099031082983],
+[-93.50344764432906, 45.109955478877716],
+[-93.50336618800982, 45.11000784945714],
+[-93.50328473169057, 45.11006022003656],
+[-93.50320327537133, 45.11011259061598],
+[-93.5031218190521, 45.110164961195395],
+[-93.50304036273286, 45.11021733177481],
+[-93.50295890641361, 45.11026970235423],
+[-93.50287745009437, 45.110322072933656],
+[-93.50279599377514, 45.110374443513074],
+[-93.5027145374559, 45.11042681409249],
+[-93.50263308113666, 45.11047918467191],
+[-93.50255162481741, 45.11053155525133],
+[-93.50247016849818, 45.110583925830745],
+[-93.50238871217894, 45.11063629641016],
+[-93.5023072558597, 45.11068866698959],
+[-93.50222579954045, 45.11074103756901],
+[-93.50214434322122, 45.110793408148425],
+[-93.50206288690198, 45.11084577872784],
+[-93.50198143058275, 45.11089814930726],
+[-93.5018999742635, 45.11095051988668],
+[-93.50181851794426, 45.111002890466104],
+[-93.50173706162502, 45.11105526104552],
+[-93.50165560530579, 45.11110763162494],
+[-93.50157414898653, 45.11116000220436],
+[-93.5014926926673, 45.111212372783775],
+[-93.50141123634806, 45.11126474336319],
+[-93.50132978002883, 45.11131711394261],
+[-93.50124832370959, 45.11136948452204],
+[-93.50116686739034, 45.111421855101455],
+[-93.5010854110711, 45.11147422568087],
+[-93.50100395475187, 45.11152659626029],
+[-93.50092249843263, 45.11157896683971],
+[-93.50084104211338, 45.11163133741913],
+[-93.50075958579414, 45.11168370799855],
+[-93.5006781294749, 45.11173607857797],
+[-93.50059667315567, 45.11178844915739],
+[-93.50051521683642, 45.111840819736805],
+[-93.50043376051718, 45.11189319031622],
+[-93.50035230419795, 45.11194556089564],
+[-93.50027084787871, 45.11199793147507],
+[-93.50018939155946, 45.112050302054485],
+[-93.50010793524022, 45.1121026726339],
+[-93.49997607088166, 45.112074195767086],
+[-93.49992566284233, 45.11199334832086],
+[-93.499875254803, 45.111912500874624],
+[-93.49982484676366, 45.11183165342839],
+[-93.49977443872433, 45.111750805982155],
+[-93.499724030685, 45.11166995853593],
+[-93.49967362264567, 45.11158911108969],
+[-93.49962321460634, 45.11150826364346],
+[-93.49957280656702, 45.11142741619722],
+[-93.49952239852767, 45.111346568750996],
+[-93.49947199048835, 45.11126572130476],
+[-93.49942158244902, 45.11118487385853],
+[-93.49937117440969, 45.11110402641229],
+[-93.49932076637036, 45.111023178966065],
+[-93.49927035833103, 45.11094233151983],
+[-93.49921995029169, 45.110861484073595],
+[-93.49916954225236, 45.11078063662736],
+[-93.49911913421303, 45.11069978918113],
+[-93.4990687261737, 45.1106189417349],
+[-93.49901831813438, 45.110538094288664],
+[-93.49896791009505, 45.11045724684243],
+[-93.49891750205572, 45.1103763993962],
+[-93.49886709401638, 45.11029555194997],
+[-93.49881668597705, 45.11021470450373],
+[-93.49876627793772, 45.1101338570575],
+[-93.49871586989839, 45.11005300961127],
+[-93.49866546185906, 45.109972162165036],
+[-93.49861505381973, 45.1098913147188],
+[-93.49856464578039, 45.10981046727257],
+[-93.49851423774106, 45.10972961982634],
+[-93.49846382970173, 45.109648772380105],
+[-93.4984134216624, 45.10956792493387],
+[-93.49836301362308, 45.109487077487636],
+[-93.49831260558375, 45.10940623004141],
+[-93.49826219754442, 45.10932538259517],
+[-93.49821178950508, 45.10924453514894],
+[-93.49816138146575, 45.109163687702704],
+[-93.49811097342642, 45.10908284025648],
+[-93.49806056538709, 45.10900199281024],
+[-93.49801015734776, 45.10892114536401],
+[-93.49795974930844, 45.10884029791777],
+[-93.4979093412691, 45.108759450471545],
+[-93.49785893322976, 45.10867860302531],
+[-93.49780852519044, 45.108597755579076],
+[-93.49775811715111, 45.10851690813284],
+[-93.49770770911178, 45.108436060686614],
+[-93.49765730107245, 45.10835521324038],
+[-93.49760689303311, 45.108274365794145],
+[-93.49755648499378, 45.10819351834791],
+[-93.49750607695445, 45.10811267090168]
+];
+
+// Initialize Mapbox map
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-93.49866546185906, 45.109972162165036],
+    zoom: 16,
+});
+
+
+// Definitions for runner, walker, and jogger
+const runner = { id: 1, mode: 'Running', color: 'red', speed: 10, location: routeCoordinates[0].slice(), routeIndex: 0 };
+const walker = { id: 2, mode: 'Walking', color: 'green', speed: 3, location: routeCoordinates[0].slice(), routeIndex: 0 };
+const jogger = { id: 3, mode: 'Jogging', color: 'blue', speed: 6, location: routeCoordinates[0].slice(), routeIndex: 0 };
+
+// Combine the individual arrays into a single array
+const peopleData = [runner, walker, jogger];
+
+const routeLine = {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': routeCoordinates
+        }
+    };
+
+// Add GeoJSON source for people
+map.on('load', () => {
+    map.addSource('people', {
+        type: 'geojson',
+        data: {
+            type: 'FeatureCollection',
+            features: peopleData.map(person => ({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: person.location,
+                },
+                properties: {
+                    id: person.id,
+                    mode: person.mode,
+                    color: person.color,
+                },
+            })),
+        },
+        
+    });
+
+    // Add the route line as a source
+    map.addSource('route', {
+        'type': 'geojson',
+        'data': routeLine
+    });
+
+    map.addLayer({
+        'id': 'routeLine',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#000000', // Use any color you like
+            'line-width': 4
+        }
+    });
+
+    // Add layers for runner, walker, and jogger
+    map.addLayer({
+        id: 'runner',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Running'],
+        paint: {
+            'circle-radius': 8,
+            'circle-color': runner.color,
+        },
+    });
+
+    map.addLayer({
+        id: 'walker',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Walking'],
+        paint: {
+            'circle-radius': 6,
+            'circle-color': walker.color,
+        },
+    });
+
+    map.addLayer({
+        id: 'jogger',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Jogging'],
+        paint: {
+            'circle-radius': 7,
+            'circle-color': jogger.color,
+        },
+    });
+
+    // Start simulating movement
+    simulateMovement();
+});
+
+function simulateMovement() {
+    setInterval(() => {
+        peopleData.forEach(person => {
+            // Move each person along the route based on their speed
+            updatePersonLocation(person);
+
+            // Update the GeoJSON data source to reflect new locations
+            map.getSource('people').setData({
+                type: 'FeatureCollection',
+                features: peopleData.map(person => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: person.location,
+                    },
+                    properties: {
+                        id: person.id,
+                        mode: person.mode,
+                        color: person.color,
+                    },
+                })),
+            });
+        });
+    }, 1000); // Update every second
+}
+
+// Speed definitions (the unit could be 'points per update interval')
+const runnerSpeed = 5; // Runner moves 5 points each interval
+const walkerSpeed = 2; // Walker moves 2 points each interval
+const joggerSpeed = 3; // Jogger moves 3 points each interval
+
+// Assign speeds to runner, walker, and jogger
+runner.speed = runnerSpeed;
+walker.speed = walkerSpeed;
+jogger.speed = joggerSpeed;
+
+
+function simulateMovement() {
+    setInterval(() => {
+        peopleData.forEach(person => {
+            // Move each person along the route based on their speed
+            updatePersonLocation(person);
+
+            // Update the GeoJSON data source to reflect new locations
+            map.getSource('people').setData({
+                type: 'FeatureCollection',
+                features: peopleData.map(person => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: person.location,
+                    },
+                    properties: {
+                        id: person.id,
+                        mode: person.mode,
+                        color: person.color,
+                    },
+                })),
+            });
+        });
+    }, 1000); // Update every second
+}
+
+function updatePersonLocation(person) {
+    // Increment the person's routeIndex based on their speed
+    person.routeIndex += person.speed;
+
+    // Ensure routeIndex loops back to the start if it exceeds the route length
+    person.routeIndex = person.routeIndex % routeCoordinates.length;
+
+    // Update the person's location to the next point in the routeCoordinates
+    person.location = routeCoordinates[person.routeIndex].slice();
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="/Users/mattiegisselbeck/Documents/GitHub/race-simulation/demos/MapleGroveTriathlon/Routes.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+
+
+<div id="map"></div>
+
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibWF0dGllZ2lzc2VsYmVjayIsImEiOiJjbG5hcmhvOWMwMHVhMmtsaW04M3dqb2N6In0.KDF-cF60UnFy3r1hGWlWfQ';
+
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: [-93.57551398513115, 45.11561193912041],
+    zoom: 12,
+});
+
+map.on('style.load', () => {
+  map.setConfigProperty('basemap', 'lightPreset', 'dusk');
+});
+
+
+map.on('load', () => {
+
+    // Add Bike Route as a Source
+    map.addSource('routeBike', {
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': routeBike
+            }
+        }
+    });
+
+    // Add Bike Route as a Layer
+    map.addLayer({
+        'id': 'routeLineBike',
+        'type': 'line',
+        'source': 'routeBike',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#888',
+            'line-width': 4
+        }
+    });
+
+        // Add Swim Route as a Source
+        map.addSource('routeSwim', {
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': routeSwim
+            }
+        }
+    });
+    
+    // Add Swim Route as a Layer
+    map.addLayer({
+        'id': 'routeLineSwim',
+        'type': 'line',
+        'source': 'routeSwim',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#fff',
+            'line-width': 4
+        }
+    });
+
+    // Add the running route as a separate source and layer
+    map.addSource('routeRun', {
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': routeRun
+            }
+        }
+    });
+
+    map.addLayer({
+        'id': 'routeLineRun',
+        'type': 'line',
+        'source': 'routeRun',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 4
+        }
+    });
+
+    // Add Participants as a Source
+    map.addSource('people', {
+        type: 'geojson',
+        data: {
+            type: 'FeatureCollection',
+            features: raceResults.map(person => ({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: person.location,
+                },
+                properties: {
+                    id: person.id,
+                    mode: person.mode,
+                    color: person.color,
+                },
+            })),
+        },
+        
+    });
+
+    // Add Participants (runner, walker, and jogger) as a Layer
+    map.addLayer({
+        id: 'runner',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Running'],
+        paint: {
+            'circle-radius': 8,
+            'circle-color': runner.color,
+        },
+    });
+
+    map.addLayer({
+    id: 'runner-label',
+    type: 'symbol',
+    source: 'people',
+    filter: ['==', ['get', 'mode'], 'Running'],
+    layout: {
+        'text-field': '5',
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        'text-size': 12
+    },
+    paint: {
+        'text-color': '#ffffff'  // Set text color for readability
+    }
+});
+
+    map.addLayer({
+        id: 'walker',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Walking'],
+        paint: {
+            'circle-radius': 8,
+            'circle-color': walker.color,
+        },
+    });
+
+    map.addLayer({
+    id: 'walker-label',
+    type: 'symbol',
+    source: 'people',
+    filter: ['==', ['get', 'mode'], 'Walking'],
+    layout: {
+        'text-field': '7',
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        'text-size': 12
+    },
+    paint: {
+        'text-color': '#ffffff'  // Set text color for readability
+    }
+});
+
+    map.addLayer({
+        id: 'jogger',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Jogging'],
+        paint: {
+            'circle-radius': 8,
+            'circle-color': jogger.color,
+        },
+    });
+    map.addLayer({
+    id: 'jogger-label',
+    type: 'symbol',
+    source: 'people',
+    filter: ['==', ['get', 'mode'], 'Jogging'],
+    layout: {
+        'text-field': '9',
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        'text-size': 12
+    },
+    paint: {
+        'text-color': '#ffffff'  // Set text color for readability
+    }
+});
+});
+    function simulateMovement() {
+    const updateInterval = setInterval(() => {
+        raceResults.forEach(person => {
+            if (!person.finished) { // Update location only if not finished
+                updatePersonLocation(person);
+            }
+        });
+
+        map.getSource('people').setData({
+            type: 'FeatureCollection',
+            features: raceResults.map(person => ({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: person.location,
+                },
+                properties: {
+                    id: person.id,
+                    mode: person.mode,
+                    color: person.color,
+                },
+            })),
+        });
+
+        // Check if all participants have finished
+        if (raceResults.every(person => person.finished)) {
+            clearInterval(updateInterval); // Stop the simulation
+        }
+    }, 1000);
+}
+
+const runner = { id: 1, mode: 'Running', color: 'red', speed: 20, location: routeSwim[0].slice(), routeIndex: 0, onRun: false, onBike: false, finished: false,  finished: false };
+const walker = { id: 2, mode: 'Walking', color: 'green', speed: 3, location: routeSwim[0].slice(), routeIndex: 0, onRun: false, onBike: false, finished: false,  finished: false };
+const jogger = { id: 3, mode: 'Jogging', color: 'blue', speed: 6, location: routeSwim[0].slice(), routeIndex: 0, onRun: false, onBike: false, finished: false,  finished: false };
+
+// Combine the individual arrays into a single array
+const raceResults = [runner, walker, jogger];
+
+// Speed definitions (the unit could be 'points per update interval')
+const runnerSpeed = 5; // Runner moves 5 points each interval
+const walkerSpeed = 2; // Walker moves 2 points each interval
+const joggerSpeed = 3; // Jogger moves 3 points each interval
+
+// Assign speeds to runner, walker, and jogger
+runner.speed = runnerSpeed;
+walker.speed = walkerSpeed;
+jogger.speed = joggerSpeed;
+
+
+function updatePersonLocation(person) {
+    // Define transition points
+    const swimToBikeTransitionPoint = [-93.49750607695445, 45.10811267090168];
+    const bikeToRunTransitionPoint = [-93.49469, 45.110029];
+
+  // Function to check if two coordinates are approximately equal
+  function coordsAreEqual(coord1, coord2) {
+        const tolerance = 0.0001; // Define a suitable tolerance for coordinate comparison
+        return Math.abs(coord1[0] - coord2[0]) < tolerance && Math.abs(coord1[1] - coord2[1]) < tolerance;
+    }
+
+    // Increment the person's routeIndex based on their speed
+    person.routeIndex += person.speed;
+
+    // Update the logic to use `onSwim` and `onBike` for transitions
+    if (!person.onBike && !person.onRun) {
+        person.location = routeSwim[person.routeIndex % routeSwim.length].slice();
+        if (coordsAreEqual(person.location, swimToBikeTransitionPoint)) {
+            person.onBike = true;
+            person.routeIndex = 0;
+        }
+    } else if (person.onBike && !person.onRun) {
+        person.location = routeBike[person.routeIndex % routeBike.length].slice();
+        if (coordsAreEqual(person.location, bikeToRunTransitionPoint)) {
+            person.onRun = true;
+            person.routeIndex = 0;
+        }
+    } else if (person.onRun) {
+        person.location = routeRun[person.routeIndex % routeRun.length].slice();
+        // Consider marking person.finished = true based on certain condition, if applicable
+    }
+}
+simulateMovement();
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibWF0dGllZ2lzc2VsYmVjayIsImEiOiJjbG5hcmhvOWMwMHVhMmtsaW04M3dqb2N6In0.KDF-cF60UnFy3r1hGWlWfQ';
+
+// Coordinates of the route
+const routeCoordinates = [
+    [-93.320019, 44.881724],
+                  [-93.319957, 44.881763],
+                  [-93.319905, 44.881816],
+                  [-93.319683, 44.881732],
+                  [-93.31947, 44.881671],
+                  [-93.319371, 44.881725],
+                  [-93.319212, 44.881783],
+                  [-93.319086, 44.881795],
+                  [-93.318928, 44.88176],
+                  [-93.318738, 44.881761],
+                  [-93.318577, 44.881741],
+                  [-93.318408, 44.881729],
+                  [-93.318254, 44.881727],
+                  [-93.318077, 44.881729],
+                  [-93.317921, 44.88172],
+                  [-93.317781, 44.881682],
+                  [-93.317577, 44.881684],
+                  [-93.317368, 44.881681],
+                  [-93.317204, 44.881677],
+                  [-93.317035, 44.881674],
+                  [-93.31685, 44.881677],
+                  [-93.316682, 44.881677],
+                  [-93.31649, 44.881675],
+                  [-93.316396, 44.881684],
+                  [-93.316242, 44.881677],
+                  [-93.316072, 44.881671],
+                  [-93.31592, 44.88167],
+                  [-93.31575, 44.881672],
+                  [-93.315561, 44.881661],
+                  [-93.315375, 44.881658],
+                  [-93.315211, 44.881664],
+                  [-93.315016, 44.881664],
+                  [-93.314836, 44.881663],
+                  [-93.314674, 44.881669],
+                  [-93.314486, 44.881668],
+                  [-93.314299, 44.881673],
+                  [-93.314119, 44.881671],
+                  [-93.313928, 44.881666],
+                  [-93.313729, 44.88167],
+                  [-93.313522, 44.881659],
+                  [-93.313324, 44.881658],
+                  [-93.31313, 44.881658],
+                  [-93.312939, 44.881656],
+                  [-93.312739, 44.881649],
+                  [-93.312559, 44.881658],
+                  [-93.312366, 44.881648],
+                  [-93.312192, 44.881644],
+                  [-93.312029, 44.881641],
+                  [-93.311832, 44.881644],
+                  [-93.311679, 44.881645],
+                  [-93.311542, 44.881654],
+                  [-93.311365, 44.881652],
+                  [-93.311181, 44.881644],
+                  [-93.31099, 44.881639],
+                  [-93.310804, 44.88163],
+                  [-93.310627, 44.881622],
+                  [-93.310435, 44.88162],
+                  [-93.310261, 44.881626],
+                  [-93.310077, 44.881629],
+                  [-93.309903, 44.881644],
+                  [-93.309735, 44.881649],
+                  [-93.309539, 44.881632],
+                  [-93.309348, 44.881639],
+                  [-93.30918, 44.881652],
+                  [-93.308988, 44.881647],
+                  [-93.308804, 44.881634],
+                  [-93.308806, 44.881563],
+                  [-93.308829, 44.88144],
+                  [-93.308834, 44.881309],
+                  [-93.308815, 44.881183],
+                  [-93.308844, 44.881051],
+                  [-93.308853, 44.880909],
+                  [-93.308845, 44.880805],
+                  [-93.308846, 44.880695],
+                  [-93.308823, 44.88057],
+                  [-93.30881, 44.880458],
+                  [-93.308841, 44.880329],
+                  [-93.308908, 44.880206],
+                  [-93.308967, 44.880112],
+                  [-93.30914, 44.880052],
+                  [-93.3093, 44.879994],
+                  [-93.309427, 44.87995],
+                  [-93.30962, 44.879972],
+                  [-93.3098, 44.879989],
+                  [-93.309965, 44.87999],
+                  [-93.310127, 44.879987],
+                  [-93.310291, 44.879974],
+                  [-93.310443, 44.879975],
+                  [-93.310634, 44.879977],
+                  [-93.310826, 44.879963],
+                  [-93.310989, 44.879969],
+                  [-93.31117, 44.879975],
+                  [-93.31134, 44.879979],
+                  [-93.311501, 44.879987],
+                  [-93.311677, 44.879996],
+                  [-93.311866, 44.879989],
+                  [-93.312053, 44.879986],
+                  [-93.312238, 44.879983],
+                  [-93.312428, 44.879983],
+                  [-93.312608, 44.879987],
+                  [-93.31279, 44.879988],
+                  [-93.312988, 44.879987],
+                  [-93.313166, 44.879986],
+                  [-93.313347, 44.879991],
+                  [-93.313546, 44.879992],
+                  [-93.313737, 44.879986],
+                  [-93.313921, 44.879979],
+                  [-93.314086, 44.879978],
+                  [-93.314243, 44.879986],
+                  [-93.314409, 44.879994],
+                  [-93.314557, 44.879999],
+                  [-93.314726, 44.879996],
+                  [-93.31491, 44.879987],
+                  [-93.315078, 44.879986],
+                  [-93.315255, 44.879992],
+                  [-93.315645, 44.880009],
+                  [-93.315807, 44.880018],
+                  [-93.315976, 44.880021],
+                  [-93.316183, 44.880009],
+                  [-93.316367, 44.880008],
+                  [-93.316513, 44.880006],
+                  [-93.316684, 44.880008],
+                  [-93.316882, 44.880005],
+                  [-93.317068, 44.880009],
+                  [-93.317237, 44.880014],
+                  [-93.317418, 44.880023],
+                  [-93.317615, 44.880034],
+                  [-93.317792, 44.880034],
+                  [-93.317957, 44.880035],
+                  [-93.318141, 44.88003],
+                  [-93.318346, 44.880033],
+                  [-93.318516, 44.880037],
+                  [-93.318677, 44.88004],
+                  [-93.318715, 44.880111],
+                  [-93.318692, 44.880215],
+                  [-93.318687, 44.880337],
+                  [-93.318684, 44.880462],
+                  [-93.31869, 44.880575],
+                  [-93.318783, 44.880662],
+                  [-93.318873, 44.880754],
+                  [-93.318911, 44.880876],
+                  [-93.319067, 44.880928],
+                  [-93.31924, 44.880939],
+                  [-93.319415, 44.880962],
+                  [-93.319513, 44.880992],
+                  [-93.319551, 44.880989],
+                  [-93.319589, 44.881058],
+                  [-93.319455, 44.88106],
+                  [-93.320056, 44.88132],
+                  [-93.320118, 44.881442],
+                  [-93.320035, 44.881527],
+                  [-93.320317, 44.881555],
+                  [-93.320317, 44.881555],
+                  [-93.320317, 44.881555],
+                  [-93.320317, 44.881555],
+                  [-93.320155, 44.881596],
+                  [-93.320215, 44.881615],
+                  [-93.320359, 44.881561],
+                  [-93.320364, 44.881535],
+                  [-93.32043, 44.881549],
+                  [-93.320432, 44.881561],
+                  [-93.320427, 44.881583],
+                  [-93.320433, 44.881555],
+                  [-93.320433, 44.881549],
+                  [-93.320437, 44.88155],
+];
+
+// Initialize Mapbox map
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-93.31433542135008, 44.88088409657351],
+    zoom: 16,
+});
+
+
+// Definitions for runner, walker, and jogger
+const runner = { id: 1, mode: 'Running', color: 'red', speed: 10, location: routeCoordinates[0].slice(), routeIndex: 0 };
+const walker = { id: 2, mode: 'Walking', color: 'green', speed: 3, location: routeCoordinates[0].slice(), routeIndex: 0 };
+const jogger = { id: 3, mode: 'Jogging', color: 'blue', speed: 6, location: routeCoordinates[0].slice(), routeIndex: 0 };
+
+// Combine the individual arrays into a single array
+const peopleData = [runner, walker, jogger];
+
+const routeLine = {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': routeCoordinates
+        }
+    };
+
+// Add GeoJSON source for people
+map.on('load', () => {
+    map.addSource('people', {
+        type: 'geojson',
+        data: {
+            type: 'FeatureCollection',
+            features: peopleData.map(person => ({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: person.location,
+                },
+                properties: {
+                    id: person.id,
+                    mode: person.mode,
+                    color: person.color,
+                },
+            })),
+        },
+        
+    });
+
+    // Add the route line as a source
+    map.addSource('route', {
+        'type': 'geojson',
+        'data': routeLine
+    });
+
+    map.addLayer({
+        'id': 'routeLine',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#000000', // Use any color you like
+            'line-width': 4
+        }
+    });
+
+    // Add layers for runner, walker, and jogger
+    map.addLayer({
+        id: 'runner',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Running'],
+        paint: {
+            'circle-radius': 8,
+            'circle-color': runner.color,
+        },
+    });
+
+    map.addLayer({
+        id: 'walker',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Walking'],
+        paint: {
+            'circle-radius': 6,
+            'circle-color': walker.color,
+        },
+    });
+
+    map.addLayer({
+        id: 'jogger',
+        type: 'circle',
+        source: 'people',
+        filter: ['==', ['get', 'mode'], 'Jogging'],
+        paint: {
+            'circle-radius': 7,
+            'circle-color': jogger.color,
+        },
+    });
+
+    // Start simulating movement
+    simulateMovement();
+});
+
+function simulateMovement() {
+    setInterval(() => {
+        peopleData.forEach(person => {
+            // Move each person along the route based on their speed
+            updatePersonLocation(person);
+
+            // Update the GeoJSON data source to reflect new locations
+            map.getSource('people').setData({
+                type: 'FeatureCollection',
+                features: peopleData.map(person => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: person.location,
+                    },
+                    properties: {
+                        id: person.id,
+                        mode: person.mode,
+                        color: person.color,
+                    },
+                })),
+            });
+        });
+    }, 1000); // Update every second
+}
+
+// Speed definitions (the unit could be 'points per update interval')
+const runnerSpeed = 5; // Runner moves 5 points each interval
+const walkerSpeed = 2; // Walker moves 2 points each interval
+const joggerSpeed = 3; // Jogger moves 3 points each interval
+
+// Assign speeds to runner, walker, and jogger
+runner.speed = runnerSpeed;
+walker.speed = walkerSpeed;
+jogger.speed = joggerSpeed;
+
+
+function simulateMovement() {
+    setInterval(() => {
+        peopleData.forEach(person => {
+            // Move each person along the route based on their speed
+            updatePersonLocation(person);
+
+            // Update the GeoJSON data source to reflect new locations
+            map.getSource('people').setData({
+                type: 'FeatureCollection',
+                features: peopleData.map(person => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: person.location,
+                    },
+                    properties: {
+                        id: person.id,
+                        mode: person.mode,
+                        color: person.color,
+                    },
+                })),
+            });
+        });
+    }, 1000); // Update every second
+}
+
+function updatePersonLocation(person) {
+    // Increment the person's routeIndex based on their speed
+    person.routeIndex += person.speed;
+
+    // Ensure routeIndex loops back to the start if it exceeds the route length
+    person.routeIndex = person.routeIndex % routeCoordinates.length;
+
+    // Update the person's location to the next point in the routeCoordinates
+    person.location = routeCoordinates[person.routeIndex].slice();
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Update a feature in realtime</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWF0dGllZ2lzc2VsYmVjayIsImEiOiJjbG5hcmhvOWMwMHVhMmtsaW04M3dqb2N6In0.KDF-cF60UnFy3r1hGWlWfQ';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/satellite-v9',
+        zoom: 0
+    });
+
+    map.on('load', async () => {
+        const response = await fetch('https://api.mapbox.com/directions/v5/mapbox/driving/-93.49481201630739%2C45.109157703214166%3B-93.49254678825785%2C45.1164267637725%3B-93.52195026512766%2C45.11678767354801%3B-93.52213507062571%2C45.13112283328341%3B-93.54313159637104%2C45.131060002248894%3B-93.634787%2C45.130261%3B-93.634452%2C45.152546%3B-93.542567%2C45.152745%3B-93.54303%2C45.130937%3B-93.542573%2C45.087419%3B-93.50236%2C45.082627%3B-93.494491%2C45.110002?alternatives=false&geometries=geojson&overview=full&steps=false&access_token=pk.eyJ1IjoibWF0dGllZ2lzc2VsYmVjayIsImEiOiJjbG5hcmhvOWMwMHVhMmtsaW04M3dqb2N6In0.KDF-cF60UnFy3r1hGWlWfQ');
+        const data = await response.json();
+        
+        const coordinates = data.routes[0].geometry.coordinates;
+        const firstCoordOnly = [coordinates[0]];
+
+        map.addSource('route', {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    type: 'LineString',
+                    coordinates: firstCoordOnly
+                }
+            }
+        });
+
+        map.addLayer({
+            id: 'route',
+            type: 'line',
+            source: 'route',
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            paint: {
+                'line-color': '#888',
+                'line-width': 8
+            }
+        });
+
+        // Move the viewport setup inside the load event
+        map.jumpTo({ 'center': coordinates[0], 'zoom': 11 });
+        map.setPitch(30);
+
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < coordinates.length) {
+                // Update the GeoJSON data directly
+                const currentData = map.getSource('route')._data;
+                currentData.geometry.coordinates.push(coordinates[i]);
+                map.getSource('route').setData(currentData);
+                map.panTo(coordinates[i]);
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, 10);
+    });
+</script>
+
+</body>
+</html>
