@@ -18,7 +18,6 @@ body { margin: 0; padding: 0; }
 	mapboxgl.accessToken = 'pk.eyJ1IjoibWF0dGllZ2lzc2VsYmVjayIsImEiOiJjbG5hcmhvOWMwMHVhMmtsaW04M3dqb2N6In0.KDF-cF60UnFy3r1hGWlWfQ';
     const map = new mapboxgl.Map({
         container: 'map',
-        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/satellite-v9',
         zoom: 0
     });
@@ -205,10 +204,8 @@ body { margin: 0; padding: 0; }
 
         const coordinates = data.features[0].geometry.coordinates;
 
-        // start by showing just the first coordinate
         data.features[0].geometry.coordinates = [coordinates[0]];
 
-        // add it to the map
         map.addSource('trace', { type: 'geojson', data: data });
         map.addLayer({
             'id': 'trace',
@@ -221,11 +218,9 @@ body { margin: 0; padding: 0; }
             }
         });
 
-        // setup the viewport
-        map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
+        map.jumpTo({ 'center': coordinates[0], 'zoom': 17 });
         map.setPitch(30);
 
-        // on a regular basis, add more coordinates from the saved list and update the map
         let i = 0;
         const timer = setInterval(() => {
             if (i < coordinates.length) {

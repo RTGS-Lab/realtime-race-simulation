@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Real-Time Tracking Simulation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
@@ -189,7 +190,7 @@ const routeCoordinates = [
 // Initialize Mapbox map
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'mapbox://styles/mapbox/satellite-v9',
     center: [-93.31433542135008, 44.88088409657351],
     zoom: 16,
 });
@@ -249,7 +250,7 @@ map.on('load', () => {
             'line-cap': 'round'
         },
         'paint': {
-            'line-color': '#000000', // Use any color you like
+            'line-color': '#ffffff', 
             'line-width': 4
         }
     });
