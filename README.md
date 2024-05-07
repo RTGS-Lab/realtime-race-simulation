@@ -1,7 +1,7 @@
 # Real-Time Race Simulation 
 
 ## Overview
-This project includes simulations of user activity from [SensorLogger]([url](https://github.com/RTGS-Lab/realtime-race-simulation/blob/master/SensorLogger/SensorLogger.md]) and race results from the Maple Grove Triathlon. To achieve this, an HTML document was developed that leverages HTML, CSS, and JavaScript to create a dynamic and interactive visualization of a triathlon race using Mapbox (Mapbox API and Mapbox GL JS).
+This project includes simulations of user activity from [SensorLogger]([url](https://github.com/RTGS-Lab/realtime-race-simulation/blob/master/SensorLogger/SensorLogger.md)) and race results from the Maple Grove Triathlon. To achieve this, an HTML document was developed that leverages HTML, CSS, and JavaScript to create a dynamic and interactive visualization of a triathlon race using Mapbox (Mapbox API and Mapbox GL JS).
 
 
 ### Maple Grove Triathlon Simulation
