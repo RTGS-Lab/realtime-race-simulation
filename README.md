@@ -12,6 +12,7 @@ The initial simulation leverages SensorLogger data to display real-time movement
 
 # Maple Grove Triathlon Simulation
 Following the success of the initial real-time tracking tests, the technology was applied to simulate the Maple Grove Triathlon, showcasing detailed participant tracking across swimming, biking, and running segments.
+[View Maple Grove Triathlon Simulation](https://hx7n46.csb.app/)
 
 ## Features
 
@@ -37,8 +38,6 @@ To deploy these simulations:
 
 These simulations not only provide valuable tools for event organizers and participants but also serve as a platform for developing and testing advanced tracking technologies in real-world scenarios.
 
-
-[View Maple Grove Triathlon Simulation](https://hx7n46.csb.app/)
 <br>
 
 <img width="1167" alt="MGT" src="https://github.com/RTGS-Lab/realtime-race-simulation/assets/103837294/5d6756be-e2e1-4190-bcc6-110beacb7756">
