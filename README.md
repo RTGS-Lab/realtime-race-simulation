@@ -1,11 +1,10 @@
 # Real-Time Tracking and Maple Grove Triathlon Simulation
 
-## General Overview
-This project showcases two major simulations: the real-time tracking simulation using SensorLogger data from iPhone and Apple Watch, and the Maple Grove Triathlon Simulation. Both utilize HTML, CSS, JavaScript, and Mapbox GL JS to dynamically display the movements of individuals, demonstrating the potential of real-time GPS tracking for various applications.
+This project showcases two simulations: the real-time tracking simulation using SensorLogger data from iPhone and Apple Watch, and the Maple Grove Triathlon Simulation. Both utilize HTML, CSS, JavaScript, and Mapbox GL JS to dynamically display the movements of individuals, demonstrating the potential of real-time GPS tracking for various applications.
 
-## Real-Time Tracking Simulation
+# Real-Time Tracking Simulation
 
-### Overview
+## Overview
 The initial simulation leverages SensorLogger data to display real-time movements on predefined routes, testing the integration and functionality of GPS tracking across different devices.
 
 ### Purpose and Functionality
@@ -15,7 +14,7 @@ The initial simulation leverages SensorLogger data to display real-time movement
 - **Tracking Algorithm Development**: Supports the testing and enhancement of algorithms for pace calculation, movement prediction, and route optimization.
 - **Scalability and Customization**: Designed to be scalable and customizable, accommodating a range of activities from small group events to large public gatherings.
 
-## Maple Grove Triathlon Simulation
+# Maple Grove Triathlon Simulation
 
 ### Overview
 Following the success of the initial real-time tracking tests, the technology was applied to simulate the Maple Grove Triathlon, showcasing detailed participant tracking across swimming, biking, and running segments.
