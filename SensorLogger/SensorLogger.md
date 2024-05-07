@@ -1,4 +1,4 @@
-# Real-Time Tracking Simulation via SensorLogger
+# Real-Time Tracking Simulation using SensorLogger
   
 ## Overview
 This simulation leverages HTML, CSS, JavaScript, and Mapbox GL JS to dynamically display the movements of individuals based on GPS data collected from SensorLogger on iPhone and Apple Watch devices. It demonstrates the potential of real-time GPS tracking for various applications.
