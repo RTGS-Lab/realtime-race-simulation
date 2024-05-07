@@ -12,4 +12,5 @@ The code sets up map layers and sources to display the race routes, covering swi
 
 [View Maple Grove Triathlon Simulation](https://hx7n46.csb.app/)
 <br>
+
 <img width="1167" alt="MGT" src="https://github.com/RTGS-Lab/realtime-race-simulation/assets/103837294/5d6756be-e2e1-4190-bcc6-110beacb7756">
