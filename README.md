@@ -13,13 +13,13 @@ The initial simulation leverages SensorLogger data to display real-time movement
 # Maple Grove Triathlon Simulation
 Following the success of the initial real-time tracking tests, the technology was applied to simulate the Maple Grove Triathlon, showcasing detailed participant tracking across swimming, biking, and running segments.
 
-### Features
+## Features
 
-#### Map Visualization
+### Map Visualization
 - **Race Routes**: Visual representation of the triathlon’s swim, bike, and run segments using distinct map layers.
 - **Starting Points**: Marks each participant's starting position on the map, providing clear visual indicators for each race segment.
 
-#### Simulation Functions
+### Simulation Functions
 - **simulateMovement()**: Continuously updates the map to reflect participants' real-time positions and progress along the race route.
 - **calculatePace()**: Calculates each participant's pace for different segments based on actual race data.
 - **updatePersonLocation()**: Updates participant locations on the map according to their calculated pace and current segment, managing transitions effectively.
